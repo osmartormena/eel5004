@@ -1,0 +1,290 @@
+\chapter{Impedâncias}
+
+Nosso estudo acerca de \emph{filtros analógicos} será pautado no mais simples dos escopos possíveis. Nos limitaremos aos \emph{componentes passivos}: \emph{resistores}, \emph{capacitores} e \emph{indutores}; e um \emph{componente ativo}: \emph{\acp{ampop}}. Essa escolha nos permite construir \emph{filtros ativos} usando componentes reais com características muito próximas de seus modelos ideais --- particularmente a sua \emph{linearidade} e \emph{invariância no tempo}.
+
+No tocante aos \acp{ampop}, sempre será considerado seu modelo ideal\footnote{Impedância de entrada infinita, impedância de saída nula, ganho de tensão infinito e banda infinita.}, aplicado em circuitos com \emph{realimentação negativa}, operando então as condições do \emph{curto circuito virtual}. As impedâncias elétricas dos resistores, capacitores e indutores, bem como a relação dessas grandezas com a análise e síntese de filtros analógicos seletivos em frequência, serão abordadas nas próximas seções.
+
+\section{Resistores}
+O resistor é um elemento de circuito definido (idealmente) somente por sua \emph{resistência elétrica}. Para uma tensão elétrica $v$ em volts (\unit{\volt}), uma corrente $i$ em amperes (\unit{\ampere}) e uma resistência elétrica $R$ em ohms (\unit{\ohm}), a relação tensão"-corrente em um resistor é dada pela \emph{lei de Ohm}
+\begin{align}\label{eq:ohm}
+	\Aboxed{v(t)&=Ri(t),}\\
+	\Aboxed{i(t)&=\frac{1}{R}v(t).}
+\end{align}
+A resistência elétrica é não"-negativa ($R\in\mathbb{R}_+$, ou $R\geq0$). A tensão \emph{sobre} o resistor, a corrente \emph{através} do resistor e o símbolo do resistor estão ilustrados na \fig{resistor}. Os sinais $+$ e $-$ indicam o sentido da diferença de potencial elétrico (tensão) enquanto a seta \tikzsetnextfilename{i}\tikz{\draw (0,0) to[short, i=\vspace{0pt}] (0.5,0);} indica o sentido da corrente elétrica.
+
+\tikzsetnextfilename{resistor}
+\begin{figure}
+	\centering
+	\caption{Resistor ideal.}
+	\label{fig:resistor}
+	\begin{tikzpicture}
+		\draw (0,0) to[R, l=$R$, v=$v(t)$, i=$i(t)$] (2,0);
+	\end{tikzpicture}
+\end{figure}
+
+Caso a tensão e corrente elétrica variem no tempo, é comum escrevê"-las em função do tempo $t$. Consideramos que $R$ é constante (invariante no tempo). Isso é uma boa aproximação para baixa dissipação de potência, pois o autoaquecimento por efeito Joule é desprezível --- ou a mudança da resistência elétrica pela variação de temperatura é desprezível.
+
+Vamos tomar que existem dois pares de tensão e corrente, $\{v_1(t), i_1(t)\}$ e $\{v_2(t), i_2(t)\}$, tal que $v_1(t)=Ri_1(t)$ e $v_2(t)=Ri_2(t)$. O resistor pode ser considerado linear se, para uma tensão $v(t)=av_1(t)+bv_2(t)$, obtemos uma corrente $i(t)=ai_1(t)+bi_2(t)$, para duas constantes $a$ e $b$ quaisquer. A lei de Ohm é uma relação linear, pois
+\begin{align*}
+	v(t)&=Ri(t),\\
+	av_1(t)+bv_2(t)&=R\big(ai_1(t)+bi_2(t)\big),\\
+	av_1(t)+bv_2(t)&=aRi_1(t)+bRi_2(t),\\
+	av_1(t)+bv_2(t)&=av_1(t)+bv_2(t).
+\end{align*}
+Porém, se as tensões ou correntes são altas o suficiente, a dissipação de potência elétrica excede o envelope térmico de dissipação do resistor --- provocando a \enquote{queima} do componente. Essa não"-linearidade pode ser ignorada em condições normais de operação.
+
+\section{Capacitores}
+Um capacitor, por sua vez, é um elemento de circuito definido (idealmente) somente por sua \emph{capacitância}. Para uma capacitância $C$ em farads (\unit{\farad}), a relação tensão"-corrente em um capacitor é dada pela derivada
+\begin{equation*}
+	i(t)=C\diff{v(t)}{t},
+\end{equation*}
+ou, alternativamente, pela antiderivada
+\begin{equation*}
+	v(t)=\frac{1}{C}\intd{i(\tau)}{\tau}{-\infty}{t}.
+\end{equation*}
+A capacitância também é não"-negativa ($C\in\mathbb{R}_+$, ou $C\geq0$). A tensão \emph{sobre} o capacitor, a corrente \emph{através} do capacitor e o símbolo do capacitor estão ilustrados na \fig{capacitor}.
+
+É muito comum, em circuitos com capacitor, especificar uma tensão (ou carga) inicial no capacitor. Assim, um valor $v(0)$ é estabelecido e usado como condição de contorno. Com isso, os valores de tensão podem ser dados, para $t\geq0$, por
+\begin{equation*}
+	v(t)=\frac{1}{C}\intd{i(\tau)}{\tau}{0}{t}+v(0).
+\end{equation*}
+No entanto, em aplicações de filtragem seletiva em frequência, \emph{sempre} consideramos que $v(0)=\qty{0}{\volt}$ para um capacitor. Assim, finalmente, podemos escrever
+\begin{align}\label{eq:iC}
+	\Aboxed{i(t)&=C\diff{v(t)}{t},\qquad\quad t\geq0;}\\\label{eq:vC}
+	\Aboxed{v(t)&=\frac{1}{C}\intd{i(\tau)}{\tau}{0}{t},\quad t\geq0.}
+\end{align}
+
+\tikzsetnextfilename{capacitor}
+\begin{figure}
+	\centering
+	\caption{Capacitor ideal.}
+	\label{fig:capacitor}
+	\begin{tikzpicture}
+		\draw (0,0) to[C, l=$C$, v=$v(t)$, i=$i(t)$] (2,0);
+	\end{tikzpicture}
+\end{figure}
+
+Idealmente, também consideramos que a capacitância $C$ é constante (invariante no tempo) e que a relação tensão"-corrente é linear\footnote{A diferenciação e a integração são operações lineares.}. No entanto, uma análise mais refinada\footnote{Há modelos mais completos, mas esse é suficiente para nossos propósitos.} considera o fato de a resistência $R$ do dielétrico do capacitor ser finita. A \fig{capacitorReal} ilustra o circuito equivalente de um capacitor real com resistência finita de dielétrico.
+
+\tikzsetnextfilename{capacitorReal}
+\begin{figure}
+	\centering
+	\caption{Capacitor real.}
+	\label{fig:capacitorReal}
+	\begin{tikzpicture}
+		\draw (0,1) to[C, l=$C$] (2,1);
+		\draw (0,0) to[R, l_=$R$] (2,0);
+		\draw (0,0) to[short] (0,1);
+		\draw (2,0) to[short] (2,1);
+		\draw (-0.5,0.5) to[short, -*] (0,0.5);
+		\draw (2,0.5) to[short, *-] (2.5,0.5);
+	\end{tikzpicture}
+\end{figure}
+
+\section{Indutores}
+Finalmente, um indutor é um elemento de circuito definido (idealmente) somente por sua \emph{indutância}. Para uma indutância $L$ em henrys (\unit{\henry}), a relação tensão"-corrente em um indutor é dada pela derivada
+\begin{equation*}
+	v(t)=L\diff{i(t)}{t},
+\end{equation*}
+ou, alternativamente, pela antiderivada
+\begin{equation*}
+	i(t)=\frac{1}{L}\intd{v(\tau)}{\tau}{-\infty}{t}.
+\end{equation*}
+A indutância também é não"-negativa ($L\in\mathbb{R}_+$, ou $L\geq0$). A tensão \emph{sobre} o indutor, a corrente \emph{através} do indutor e o símbolo do indutor estão ilustrados na \fig{indutor}.
+
+É muito comum, em circuitos com indutor, especificar uma corrente inicial no indutor. Assim, um valor $i(0)$ é estabelecido e usado como condição de contorno. Com isso, os valores de corrente podem ser dados, para $t\geq0$, por
+\begin{equation*}
+	i(t)=\frac{1}{L}\intd{v(\tau)}{\tau}{0}{t}+i(0).
+\end{equation*}
+No entanto, assim como a tensão inicial do capacitor, em aplicações de filtragem seletiva em frequência, \emph{sempre} consideramos que $i(0)=\qty{0}{\ampere}$ para um indutor. Assim, finalmente, podemos escrever
+\begin{align}\label{eq:vL}
+	\Aboxed{v(t)&=L\diff{i(t)}{t},\qquad\quad t\geq0;}\\\label{eq:iL}
+	\Aboxed{i(t)&=\frac{1}{L}\intd{v(\tau)}{\tau}{0}{t},\quad t\geq0.}
+\end{align}
+
+\tikzsetnextfilename{indutor}
+\begin{figure}
+	\centering
+	\caption{Indutor ideal.}
+	\label{fig:indutor}
+	\begin{tikzpicture}
+		\draw (0,0) to[L, l=$L$, v=$v(t)$, i=$i(t)$] (2,0);
+	\end{tikzpicture}
+\end{figure}
+
+Idealmente, também consideramos que a indutância $L$ é constante (invariante no tempo) e que a relação tensão"-corrente é linear. No entanto, uma análise \emph{minimamente} adequada para indutores considera dois efeitos parasíticos: a resistência elétrica do enrolamento do indutor; e a capacitância entre os sucessivos enrolamentos. A \fig{indutorReal} ilustra o circuito equivalente de um indutor real.
+
+\tikzsetnextfilename{indutorReal}
+\begin{figure}
+	\centering
+	\caption{Indutor real.}
+	\label{fig:indutorReal}
+	\begin{tikzpicture}
+		\draw (0,1) to[L, l=$L$] (2,1);
+		\draw (2,1) to[R, l=$R$] (4,1);
+		\draw (0,0) to[C, l_=$C$] (4,0);
+		\draw (0,0) to[short] (0,1);
+		\draw (4,0) to[short] (4,1);
+		\draw (-0.5,0.5) to[short, -*] (0,0.5);
+		\draw (4,0.5) to[short, *-] (4.5,0.5);
+	\end{tikzpicture}
+\end{figure}
+
+\section{Impedâncias}
+A análise de circuitos com resistores, capacitores, indutores e \acp{ampop} é conceitualmente simples. Usando as relações tensão"-corrente dos componentes, bem como as \emph{leis de Kirchhoff}, chegamos a um conjunto de \emph{\acp{edo}}, cuja solução é um exercício matemático bem definido.
+
+Exceto que a solução de um sistema de \acp{edo} é, na prática, um trabalho matemático demasiadamente laborioso. Além disso, é comum a necessidade de uma significativa intuição matemática na adequada manipulação das equações, para alcançar o resultado desejado. Esses fatores tornam a solução do sistema de \acp{edo} uma solução pouco atrativa, especialmente para discentes em uma primeira apresentação.
+
+A \emph{transformada de Laplace} é uma operação matemática reconhecida por sua utilidade em problemas de análise de circuitos elétricos. Ela converte um sistema de \acp{edo} para um sistema de equações lineares que, por sua vez, pode ser resolvido usando técnicas clássicas da Álgebra Linear.
+
+Para uma tensão elétrica $v(t)$ e para uma corrente elétrica $i(t)$ --- ambas funções reais no tempo real --- a transformada de Laplace pode ser aplicada para obter
+\begin{align}\label{eq:laplaceV}
+	V(s)&=\lt{v(t)}{t},\\\label{eq:laplaceI}
+	I(s)&=\lt{i(t)}{t}.
+\end{align}
+Sendo $V(s)$ a representação, no domínio de Laplace, da tensão elétrica, enquanto $I(s)$ é a representação, também no domínio de Laplace, da corrente elétrica --- ambas funções complexas. A variável $s$ também é complexa ($s\in\mathbb{C}$) e difícil interpretação física.
+
+Por hora, não nos preocuparemos com os detalhes da transformada de Laplace. Nos basta saber que as funções $v(t)$ e $i(t)$, bem como os valores de $s$, são tais que as integrais das Eqs.~\eqref{eq:laplaceV} e \eqref{eq:laplaceI} convergem e produzem funções $V(s)$ e $I(s)$ bem definidas. Com elas, podemos definir a \emph{impedância elétrica} como
+\begin{equation}
+	Z(s)=\frac{V(s)}{I(s)},
+\end{equation}
+sendo a impedância $Z(s)$ uma grandeza complexa --- $Z(s)\in\mathbb{C}$ --- com unidade de ohms (\unit{\ohm}).
+
+\section{Impedância de resistores}
+A transformada de Laplace é uma operação linear. A sua aplicação sobre a lei de Ohm --- \equ{ohm} --- demonstra que a impedância de um resistor é igual à sua própria resistência:
+\begin{align}
+	\lt{v(t)}{t}&=\lt{Ri(t)}{t},\notag\\
+	V(s)&=R\lt{i(t)}{t},\notag\\
+	V(s)&=RI(s)\iff\frac{V(s)}{I(s)}=\boxed{Z(s)=R.}
+\end{align}
+
+Esse resultado nos indica que as impedâncias se comportam da mesma forma que as resistências, porém, como veremos, essa análise pode ser generalizada para componentes reativos (e.g.\ capacitores e indutores) em circuitos.
+
+\section{Impedância de capacitores}
+Aplicando a transformada de Laplace sobre a \equ{vC}, temos
+\begin{align*}
+	\lt{v(t)}{t}&=\intd{\Big(\frac{1}{C}\intd{i(\tau)}{\tau}{0}{t}\Big)\e^{-st}}{t}{0}{\infty},\\
+	V(s)&=\frac{1}{C}\intd{\Big(\intd{i(\tau)}{\tau}{0}{t}\Big)\e^{-st}}{t}{0}{\infty},
+\end{align*}
+onde, realizando a \emph{integração por partes}, com $u=\intd{i(\tau)}{\tau}{0}{t}=\mathcal{I}(t)$ (com $\mathcal{I}(0)=0$) e $\mathrm{d}v=\e^{-st}\,\mathrm{d}t$, de maneira que $\mathrm{d}u=i(t)\,\mathrm{d}t$ e $v=-\e^{st}/s$, resulta em
+\begin{align*}
+	V(s)&=\frac{1}{C}\bigg(\bigg[\intd{i(\tau)}{\tau}{0}{t}\Big(\frac{-\e^{-st}}{s}\Big)\bigg]_0^\infty-\intd{-\frac{\e^{st}}{s}i(t)}{t}{0}{\infty}\bigg),\\
+	V(s)&=\frac{1}{C}\bigg(\bigg[\frac{\mathcal{I}(t)\e^{-st}}{s}\bigg]_\infty^0+\frac{1}{s}\lt{i(t)}{t}\bigg),\\
+	V(s)&=\frac{1}{C}\bigg(\frac{\mathcal{I}(0)\e^{-s0}-\mathcal{I}(\infty)\e^{-s\infty}}{s}+\frac{I(s)}{s}\bigg),
+\end{align*}
+como $\mathcal{I}(0)\e^{-s0}=\mathcal{I}(0)\e^{0}=0$ e $\mathcal{I}(\infty)\e^{-s\infty}=\mathcal{I}(\infty)\e^{-\infty}=0$\footnote{A igualdade $\e^{-s\infty}=\e^{-\infty}=0$ só é verdadeira se a parte real de $s$ for positiva. Vocês verão, em um futuro estudo mais aprofundado da transformada de Laplace, que tomar $\Re s>0$ é praxe, por estar relacionada à importante propriedade da \emph{causalidade}.}, toda a primeira fração se anula, restando
+\begin{equation}\label{eq:zC}
+	V(s)=\frac{I(s)}{sC}\iff\frac{V(s)}{I(s)}=\boxed{Z(s)=\frac{1}{sC}.}
+\end{equation}	
+A impedância do capacitor está inversamente relacionada à sua capacitância $C$ e, diferentemente da impedância do resistor, que é constante, a impedância do capacitor é variável (com $s$).
+
+\section{Impedância de indutores}
+Aplicando a transformada de Laplace sobre a \equ{vL}, temos
+\begin{align*}
+	\lt{v(t)}{t}&=\lt{L\diff{i(t)}{t}}{t},\\
+	V(s)&=L\intd{\e^{-st}\diff{i(t)}{t}}{t}{0}{\infty},
+\end{align*}
+onde, realizando a integração por partes, com $u=\e^{-st}$ e $\mathrm{d}v=\diff{i(t)}{t}\,\mathrm{d}t$, de maneira que $\mathrm{d}u=-s\e^{-st}\,\mathrm{d}t$ e $v=i(t)$, resulta em
+\begin{align*}
+	V(s)&=L\Big(\Big[\e^{-st}i(t)\Big]_0^\infty-\intd{i(t)\big(-s\e^{-st}\big)}{t}{0}{\infty}\Big),\\
+	V(s)&=L\Big(\Big[i(t)\e^{-st}\Big]_0^\infty+s\lt{i(t)}{t}\Big),\\
+	V(s)&=L\big(i(\infty)\e^{-s\infty}-i(0)\e^{-s0}+sI(s)\big),
+\end{align*}
+como $i(0)\e^{-s0}=i(0)\e^{0}=0$ e $i(\infty)\e^{-s\infty}=i(\infty)\e^{-\infty}=0$, os dois primeiros termos se anulam, restando
+\begin{equation}\label{eq:zL}
+	V(s)=sLI(s)\iff\frac{V(s)}{I(s)}=\boxed{Z(s)=sL.}
+\end{equation}	
+A impedância do indutor está diretamente relacionada à sua indutância $L$ e, assim como a impedância do capacitor, a impedância do indutor é variável (com $s$).
+
+\section{Associação de impedâncias}
+Duas impedâncias, $Z_1(s)$ e $Z_2(s)$, podem se associar em série ou em paralelo (\fig{serieParalelo}), com suas impedâncias equivalentes --- $Z_E(s)$ --- dadas, respectivamente, por
+\begin{align}
+	Z_E(s)&=Z_1(s)+Z_2(s),\\
+	\frac{1}{Z_E(s)}&=\frac{1}{Z_1(s)}+\frac{1}{Z_2(s)}\iff Z_E(s)=\frac{Z_1(s)Z_2(s)}{Z_1(s)+Z_2(s)},
+\end{align}
+de maneira idêntica ao comportamento da associação de resistores.
+
+\begin{figure}
+	\centering
+	\caption{Associação em série e paralelo de impedâncias.}
+	\label{fig:serieParalelo}
+	\tikzsetnextfilename{serieParalelo}
+	\begin{tikzpicture}
+		\draw (0,0) to[generic, l=$Z_1(s)$] (2,0) to[generic, l=$Z_1(s)$] (4,0);
+		\node at(2,-1.25) {$Z_1(s)+Z_2(s)$};
+		\draw (5.5,0) to[short, -*] (6,0) to[short] (6,0.5) to[generic, l=$Z_1(s)$] (8,0.5) to[short, -*] (8,0) to[short] (8.5,0);
+		\draw (6,0) to[short] (6,-0.5) to[generic, l=$Z_2(s)$] (8,-0.5) to[short] (8,0);
+		\node at(7,-1.25) {$\displaystyle\frac{1}{Z_1(s)}+\frac{1}{Z_2(s)}$};
+	\end{tikzpicture}
+\end{figure}
+
+Para ilustrar esse conceito, a associação em série de um resistor e um capacitor ideal produz uma impedância equivalente da associação em série de um resistor ($R$) e um capacitor ($C$):
+\begin{equation}\label{eq:serieRC}
+	Z_E(s)=R+\frac{1}{sC}=\frac{sRC+1}{sC}.
+\end{equation}
+Enquanto a associação em paralelo de um resistor ($R$) e um capacitor ($C$) resulta em:
+\begin{equation}\label{eq:paraleloRC}
+	Z_E(s)=\frac{\displaystyle R\frac{1}{sC}}{\displaystyle R+\frac{1}{sC}}=\frac{\displaystyle\frac{R}{sC}}{\displaystyle\frac{sRC+1}{sC}}=\frac{R}{sRC+1}.
+\end{equation}
+Incidentalmente, a impedância dada pela \equ{paraleloRC} também representa a impedância do modelo de capacitor real (\fig{capacitorReal}), tendo $R$ como a resistência do dielétrico. Notamos que, caso essa resistência tenda ao infinito, retornamos à impedância do capacitor ideal
+\begin{equation*}
+	\lim_{R\to\infty}\frac{R}{sRC+1}=\lim_{R\to\infty}\frac{1}{\displaystyle sC+\frac{1}{R}}=\frac{1}{sC}.
+\end{equation*}
+
+A impedância do modelo real do indutor (\fig{indutorReal}) contém duas assossiações: uma em série e uma em paralelo.
+\begin{align}
+	\frac{1}{Z_E(s)}&=\frac{1}{sL+R}+\frac{1}{\displaystyle\frac{1}{sC}}=\frac{1}{sL+R}+sC\notag,\\
+	\frac{1}{Z_E(s)}&=\frac{1+sC(sL+R)}{sL+R}=\frac{1+sRC+s^2LC}{sL+R}\notag,\\
+	Z_E(s)&=\frac{sL+R}{s^2LC+sRC+1},
+\end{align}
+onde, mais uma vez, averigua"-se a consistência do modelo real com o ideal, caso a resistência e capacitância parasíticas sejam desconsideradas
+\begin{equation*}
+	\lim_{R,C\to0}\frac{sL+R}{s^2LC+sRC+1}=sL.
+\end{equation*}
+
+\section{Função de transferência}
+Em um circuito, podemos tomar uma grandeza de tensão ou corrente elétrica como um \emph{sinal de entrada}. Outra grandeza, também de tensão ou corrente elétrica, pode ser tomada como o \emph{sinal de saída}. A razão da transformada de Laplace do sinal de saída, pela transformada de Laplace do sinal de entrada, define a \emph{função de transferência} do circuito --- $H(s)$.
+
+Tomando, por exemplo, o circuito RC da \fig{RC}. Temos uma associação em série de um resistor --- $Z_1(s)$ --- e um capacitor --- $Z_2(s)$. O sinal de entrada é a fonte independente de tensão, $v_i(t)$. O sinal de saída é a tensão sobre o capacitor, $v_o(t)$. Usando a transformada de Laplace e as impedâncias, podemos usar a \emph{lei do divisor resistivo de tensão}.
+\begin{align*}
+	V_o(s)&=\frac{Z_2(s)}{Z_1(s)+Z_2(s)}V_i(s)\\
+	\frac{V_o(s)}{V_i(s)}=H(s)&=\frac{Z_2(s)}{Z_1(s)+Z_2(s)}.
+\end{align*}
+
+\begin{figure}
+	\centering
+	\caption{Circuito RC série.}
+	\label{fig:RC}
+	\tikzsetnextfilename{RC}
+	\begin{tikzpicture}
+		\draw (0,0) node[ground]{} to[V, invert, l=$v_i(t)$] (0,1.5) to[R, l=$R$] (2,1.5) to[C, l_=$C$, v^=$v_o(t)$] (2,0) node[ground]{};
+	\end{tikzpicture}
+\end{figure}
+
+Assim, substituindo $Z_1(s)$ e $Z_2(s)$, $H(s)$ pode ser obtida
+\begin{equation}\label{eq:RC}
+	H(s)=\frac{\displaystyle\frac{1}{sC}}{\displaystyle R+\frac{1}{sC}}=\frac{\displaystyle\frac{1}{sC}}{\displaystyle\frac{sRC+1}{sC}}=\frac{\displaystyle\frac{1}{RC}}{\displaystyle s+\frac{1}{RC}}.
+\end{equation}
+
+A escolha da variável como sinal de entrada ou de saída é significante na definição da função de transferência. Refazendo essa última análise, porém considerando que a tensão de saída é tomada sobre o resistor $R$, chegamos a uma nova (e distinta) função de transferência
+\begin{equation*}
+	H(s)=\frac{R}{\displaystyle R+\frac{1}{sC}}=\frac{R}{\displaystyle\frac{sRC+1}{sC}}=\frac{sRC}{sRC+1}=\frac{s}{\displaystyle s+\frac{1}{RC}}.
+\end{equation*}
+
+Circuitos \acp{lit} são formados por fontes independentes e\slash ou dependentes de tensão e\slash ou de corrente, mais uma malha de resistores, capacitores e\slash ou indutores. Já sabemos que circuitos dessa natureza são representados por \acp{edo} de ordem $N$, sendo $N$ o número de componentes reativos (capacitores ou indutores) independentes na malha do circuito. Assumindo que as variáveis de entrada e saída sejam tensões, respectivamente, $v_i(t)$ e $v_o(t)$, temos
+\begin{equation}\label{eq:edo}
+	a_N\diffn{v_o(t)}{t}{N}+\cdots+a_0v_o(t)=b_M\diffn{v_i(t)}{t}{M}+\cdots+b_0v_i(t).
+\end{equation}
+
+Em razão das propriedades da transformada de Laplace, a função de transferência da \ac{edo} de ordem $N$, da \equ{edo}, é uma \emph{função racional} em $s$, ou seja, a razão de dois polinômios em $s$, da forma
+\begin{equation}
+	H(s)=\frac{b_Ms^M+b_{M-1}s^{M-1}+\cdots+b_1s+b_0}{a_Ns^N+a_{N-1}s^{N-1}+\cdots+a_1s+a_0},
+\end{equation}
+com $M\leq N$.
+
+Como será discutido em aulas posteriores, a ordem do numerador $M$ pode ser tomada como zero, para simplificar nossas próximas análises. Além disso, é praxe normalizar os coeficientes, de maneira que $a_N=1$. Assim, consideramos que as funções de transferência são no formato
+\begin{equation}
+	\boxed{H(s)=\frac{b_0}{s^N+a_{N-1}s^{N-1}+\cdots+a_1s+a_0}.}
+\end{equation}
+
+\end{document}

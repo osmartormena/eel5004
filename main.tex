@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                      %
-% Template para material paradidático  %
+% Material paradidático de EEL5004     %
 %                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,7 +33,7 @@
 
 \newcommand*{\eng}[1]{\foreignlanguage{american}{\textit{#1}}}
 
-\input{acrolist}
+\input{../acroTeX/acrolist}
 \usepackage{csquotes}
 \usepackage{booktabs}
 \usepackage{amssymb}
@@ -58,8 +58,12 @@
 \newcommand*{\equ}[1]{Eq.~\eqref{eq:#1}}
 \newcommand*{\tab}[1]{Tabela~\ref{tab:#1}}
 \newcommand*{\e}{\ensuremath\mathrm{e}}
+\newcommand*{\diff}[2]{\ensuremath\frac{\mathrm{d}}{\mathrm{d}#2}#1}
+\newcommand*{\diffn}[3]{\ensuremath\frac{\mathrm{d}^{#3}}{\mathrm{d}#2^{#3}}#1}
+\newcommand*{\intd}[4]{\ensuremath\int_{#3}^{#4}#1\,\mathrm{d}#2}
+\newcommand*{\lt}[2]{\ensuremath\intd{#1\e^{-s#2}}{#2}{0}{\infty}}
 
-\title{Título}
+\title{EEL5004 --- Filtragem Analógica}
 \author{Osmar Tormena Júnior, Prof.\ Dr.\thanks{tormena@utfpr.edu.br}}
 \date{}
 
@@ -70,6 +74,7 @@
 \clearpage\pagestyle{plain}\tableofcontents*
 
 \mainmatter
+\include{chap/imp.tex}
 
 \backmatter
 
